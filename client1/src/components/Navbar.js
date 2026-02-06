@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaHome, FaPlus } from 'react-icons/fa';
+import { FaHome, FaPlus, FaCheck } from 'react-icons/fa';
 import './Navbar.css';
 
 function Navbar() {
@@ -23,6 +23,12 @@ function Navbar() {
               <Link className="nav-link d-flex align-items-center" to="/add">
                 <FaPlus className="me-2" />
                 Add Task
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link d-flex align-items-center" to="/completed">
+                <FaCheck className="me-2" />
+                Completed Tasks
               </Link>
             </li>
           </ul>

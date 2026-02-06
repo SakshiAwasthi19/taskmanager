@@ -6,14 +6,13 @@ A full-stack web application for managing your daily tasks, built with React, Re
 The Task Manager helps you organize, track, and manage your tasks efficiently. You can add, edit, delete, and view tasks, as well as mark them as pending, in-progress, or completed. The dashboard provides a clear overview of all your tasks with a modern, responsive UI.
 
 ## ✨ Features
-- Responsive dashboard to view all tasks
-- Add new tasks with title, description, due date, and status
-- Edit and delete existing tasks
-- Status badges for task progress (pending, in-progress, completed)
-- Sortable task cards (drag-and-drop with jQuery UI)
-- Tooltips and smooth animations (jQuery)
-- Persistent storage with MongoDB
-- RESTful API with Express.js
+- **Filtered Dashboard**: Main view shows only Pending and In-Progress tasks.
+- **Completed Tasks View**: Dedicated page for viewing historical/completed tasks.
+- **Read-Only Details**: Clean, non-editable view for task details with action buttons.
+- **Smart Forms**: Add/Edit form pre-fills data and adapts title/buttons.
+- **Task Management**: Add, Edit, Delete, and Mark as Complete functionality.
+- **Sortable Cards**: Drag-and-drop task organization (jQuery UI).
+- **Responsive UI**: Modern interface with Bootstrap and custom CSS.
 
 ## 🛠️ Tech Stack
 - **Frontend:** React, Redux, Bootstrap, jQuery, jQuery UI
@@ -33,30 +32,38 @@ cd fsui-assignment
 ```
 
 ### 2. Install dependencies
-#### Backend
+#### Backend (Root Directory)
 ```bash
-cd server
 npm install
 ```
 #### Frontend
 ```bash
-cd ../client1
+cd client1
 npm install
+cd ..
 ```
 
 ### 3. Start the application
 #### Start MongoDB (if not already running)
 Make sure your MongoDB server is running locally on `mongodb://localhost:27017`.
 
-#### Start Backend Server
+#### Run Both (Recommended)
+You can run both the backend and frontend concurrently with a single command from the root directory:
 ```bash
-cd ../server
-node ../server.js
+npm run dev:full
 ```
 
-#### Start Frontend
+#### Or Run Individually
+**Backend:**
 ```bash
-cd ../client1
+npm run dev
+# OR
+node server.js
+```
+
+**Frontend:**
+```bash
+cd client1
 npm start
 ```
 
@@ -64,10 +71,12 @@ npm start
 Visit [http://localhost:3002](http://localhost:3002) to use the Task Manager.
 
 ## 🖥️ Usage
-- **Dashboard:** View all tasks, drag to reorder, see status badges.
-- **Add Task:** Click "+ Add New Task" to create a new task.
-- **Edit/Delete:** Use the edit and delete buttons on each task card.
-- **Status:** Track progress with colored badges.
+- **Dashboard**: View active tasks (Pending/In-Progress). Use filters to search or sort.
+- **View Task**: Click "View" on a card to see full details in a read-only page.
+- **Completed Tasks**: Access the "Completed Tasks" page from the Navbar to see finished work.
+- **Add Task**: Click "+ Add Task" in the Navbar or Dashboard.
+- **Edit Task**: Click "Edit" on a card or "Edit Task" in the details view to modify.
+- **Mark Complete**: Click "Done" on a card or "Mark as Complete" in details to move to Completed list.
 
 ## 📁 Project Structure
 ```

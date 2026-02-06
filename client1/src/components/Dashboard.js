@@ -10,7 +10,7 @@ import './TaskCard.css';
 import './PriorityBadge.css';
 import { FaSearch, FaFilter, FaTimes, FaCheck, FaTrash, FaEdit } from 'react-icons/fa';
 
-function Dashboard() {
+function Dashboard({ showCompletedOnly = false }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { tasks, status, error } = useSelector((state) => state.tasks);
@@ -26,31 +26,33 @@ function Dashboard() {
       status: task.status,
       searchTerm,
       statusFilter,
-      priorityFilter
+      priorityFilter,
+      showCompletedOnly
     });
 
-    // Search filter - improved to match any part of the text
-    const matchesSearch = searchTerm ? 
+    // Search filter
+    const matchesSearch = searchTerm ?
       task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       task.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
       task.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
       task.priority.toLowerCase().includes(searchTerm.toLowerCase())
       : true;
 
-    // Status filter
-    const matchesStatus = statusFilter ? task.status === statusFilter : true;
+    // Status filter - Adjusted for showCompletedOnly logic
+    let matchesStatus = true;
+    if (showCompletedOnly) {
+      matchesStatus = task.status === 'completed';
+    } else {
+      // If we are on the main dashboard, exclude completed tasks
+      if (task.status === 'completed') return false;
+      // Apply status filter if selected (e.g. pending/in-progress)
+      matchesStatus = statusFilter ? task.status === statusFilter : true;
+    }
 
-    // Priority filter - improved comparison
-    const matchesPriority = priorityFilter ? 
-      task.priority?.toLowerCase() === priorityFilter.toLowerCase() 
+    // Priority filter
+    const matchesPriority = priorityFilter ?
+      task.priority?.toLowerCase() === priorityFilter.toLowerCase()
       : true;
-
-    // Debug logging for priority filter
-    console.log('Priority filter result:', {
-      taskPriority: task.priority,
-      filterPriority: priorityFilter,
-      matchesPriority
-    });
 
     return matchesSearch && matchesStatus && matchesPriority;
   });
@@ -84,7 +86,7 @@ function Dashboard() {
           $(taskListRef.current).sortable({
             items: '.task-card',
             handle: '.card-header',
-            update: function(event, ui) {
+            update: function (event, ui) {
               // Here you could implement custom sorting logic
               console.log('Task order updated');
             }
@@ -97,10 +99,10 @@ function Dashboard() {
 
       // Hover effects
       $('.task-card').hover(
-        function() {
+        function () {
           $(this).find('.task-actions').stop().fadeIn(200);
         },
-        function() {
+        function () {
           $(this).find('.task-actions').stop().fadeOut(200);
         }
       );
@@ -170,66 +172,66 @@ function Dashboard() {
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <h1>Dashboard</h1>
+        <h1>{showCompletedOnly ? 'Completed Tasks' : 'Dashboard'}</h1>
       </div>
 
       <div className="filter-container">
         <div className="filter-row">
-        <div className="filter-group">
-          <label>Search</label>
-          <div className="input-group">
-            <span className="input-group-text">
-              <FaSearch className="filter-icon" />
-            </span>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+          <div className="filter-group">
+            <label>Search</label>
+            <div className="input-group">
+              <span className="input-group-text">
+                <FaSearch className="filter-icon" />
+              </span>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="filter-group">
+            <label>Status</label>
+            <select
+              className="form-select"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              {showCompletedOnly && <option value="completed">Completed</option>}
+            </select>
+          </div>
+          <div className="filter-group">
+            <label>Priority</label>
+            <select
+              className="form-select"
+              value={priorityFilter}
+              onChange={(e) => setPriorityFilter(e.target.value)}
+            >
+              <option value="">All Priorities</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
           </div>
         </div>
-        <div className="filter-group">
-          <label>Status</label>
-          <select
-            className="form-select"
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+        <div className="text-end mt-2">
+          <button
+            className="clear-filters"
+            onClick={() => {
+              setSearchTerm('');
+              setStatusFilter('');
+              setPriorityFilter('');
+            }}
           >
-            <option value="">All Status</option>
-            <option value="pending">Pending</option>
-            <option value="in-progress">In Progress</option>
-            <option value="completed">Completed</option>
-          </select>
+            <FaTimes className="filter-icon" />
+            Clear Filters
+          </button>
         </div>
-        <div className="filter-group">
-          <label>Priority</label>
-          <select
-            className="form-select"
-            value={priorityFilter}
-            onChange={(e) => setPriorityFilter(e.target.value)}
-          >
-            <option value="">All Priorities</option>
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-            <option value="low">Low</option>
-          </select>
-        </div>
-      </div>
-      <div className="text-end mt-2">
-        <button
-          className="clear-filters"
-          onClick={() => {
-            setSearchTerm('');
-            setStatusFilter('');
-            setPriorityFilter('');
-          }}
-        >
-          <FaTimes className="filter-icon" />
-          Clear Filters
-        </button>
-      </div>
       </div>
 
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -251,8 +253,8 @@ function Dashboard() {
       ) : (
         <div className="row g-4 task-list" ref={taskListRef}>
           {filteredTasks.map((task) => (
-            <div 
-              key={task._id} 
+            <div
+              key={task._id}
               id={`task-${task._id}`}
               className="col-md-6 col-lg-4 task-card"
               data-toggle="tooltip"
@@ -284,18 +286,33 @@ function Dashboard() {
                   <div className="position-absolute bottom-0 end-0 mb-3 me-3">
                     <div className="d-flex gap-2">
                       <button
-                        className="action-btn btn-done"
-                        onClick={() => handleComplete(task._id)}
+                        className="action-btn btn-view"
+                        onClick={() => navigate(`/task/${task._id}`)}
                       >
-                        <FaCheck />
-                        Done
+                        <FaSearch className="me-1" /> View
                       </button>
+
+                      <button
+                        className="action-btn btn-edit"
+                        onClick={() => handleEdit(task._id)}
+                      >
+                        <FaEdit /> Edit
+                      </button>
+
+                      {!showCompletedOnly && task.status !== 'completed' && (
+                        <button
+                          className="action-btn btn-done"
+                          onClick={() => handleComplete(task._id)}
+                        >
+                          <FaCheck /> Done
+                        </button>
+                      )}
+
                       <button
                         className="action-btn btn-delete"
                         onClick={() => handleDelete(task._id)}
                       >
-                        <FaTrash />
-                        Delete
+                        <FaTrash /> Delete
                       </button>
                     </div>
                   </div>

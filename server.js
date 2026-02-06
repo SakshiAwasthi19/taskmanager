@@ -15,18 +15,18 @@ mongoose.connect('mongodb://localhost:27017/taskmanager', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
-.then(() => console.log('MongoDB Connected'))
-.catch(err => console.log('MongoDB Connection Error:', err));
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.log('MongoDB Connection Error:', err));
 
 // Task Schema
 const taskSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     status: { type: String, enum: ['pending', 'in-progress', 'completed'], default: 'pending' },
-    priority: { 
-        type: String, 
-        enum: ['low', 'medium', 'high'], 
-        default: 'medium' 
+    priority: {
+        type: String,
+        enum: ['low', 'medium', 'high'],
+        default: 'medium'
     },
     dueDate: { type: Date },
     createdAt: { type: Date, default: Date.now }
@@ -39,6 +39,16 @@ app.get('/api/tasks', async (req, res) => {
     try {
         const tasks = await Task.find().sort({ createdAt: -1 });
         res.json(tasks);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+app.get('/api/tasks/:id', async (req, res) => {
+    try {
+        const task = await Task.findById(req.params.id);
+        if (!task) return res.status(404).json({ message: 'Task not found' });
+        res.json(task);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

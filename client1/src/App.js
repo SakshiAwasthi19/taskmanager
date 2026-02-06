@@ -16,7 +16,8 @@ function App() {
           <Navbar />
           <div className="container mt-4">
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={<Dashboard showCompletedOnly={false} />} />
+              <Route path="/completed" element={<Dashboard showCompletedOnly={true} />} />
               <Route path="/add" element={<AddTask />} />
               <Route path="/add-task" element={<AddTask />} />
               <Route path="/add-task/:id" element={<AddTask />} />

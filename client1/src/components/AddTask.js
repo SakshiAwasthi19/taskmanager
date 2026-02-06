@@ -20,14 +20,14 @@ function AddTask() {
   useEffect(() => {
     if (taskId) {
       setLoading(true);
-      dispatch(fetchTask(taskId))
+      dispatch(fetchTask(taskId)).unwrap()
         .then(task => {
           if (task) {
             setTitle(task.title);
             setDescription(task.description);
             setStatus(task.status);
             setPriority(task.priority || 'medium');
-            setDueDate(task.dueDate || '');
+            setDueDate(task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '');
           }
         })
         .catch(error => {
@@ -83,10 +83,10 @@ function AddTask() {
       } else {
         result = await dispatch(addTask(task)).unwrap();
       }
-      
+
       // Show success message (optional)
       console.log('Task saved successfully:', result);
-      
+
       // Redirect to dashboard
       navigate('/');  // Redirect to root path which shows Dashboard
     } catch (error) {
@@ -125,7 +125,7 @@ function AddTask() {
         <div className="col-md-8 col-lg-6">
           <div className="card">
             <div className="card-body">
-              <h2 className="card-title text-center mb-4">Add New Task</h2>
+              <h2 className="card-title text-center mb-4">{isEditing ? 'Edit Task' : 'Add New Task'}</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <label htmlFor="title" className="form-label">
@@ -209,7 +209,7 @@ function AddTask() {
                     <i className="fas fa-times me-2"></i>Cancel
                   </button>
                   <button type="submit" className="btn btn-primary">
-                    <i className="fas fa-plus me-2"></i>Add Task
+                    <i className={isEditing ? "fas fa-save me-2" : "fas fa-plus me-2"}></i>{isEditing ? 'Update Task' : 'Add Task'}
                   </button>
                 </div>
               </form>
