@@ -30,11 +30,14 @@
   --input-bg: #2d2d2d;
   --input-text: #e0e0e0;
   --input-border: #404040;
-  --primary-color: #64b5f6;
+  --primary-color: #90caf9;
   /* Lighter blue for dark mode */
   --secondary-color: #404040;
-  --btn-secondary-bg: #404040;
+  --btn-secondary-bg: #424242;
   --btn-secondary-text: #e0e0e0;
+  --danger-color: #ef5350;
+  --success-color: #66bb6a;
+  --warning-color: #ffa726;
 }
 
 body {

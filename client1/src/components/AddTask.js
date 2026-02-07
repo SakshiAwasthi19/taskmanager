@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addTask, updateTask, fetchTask } from '../store/taskSlice';
 import { FaArrowLeft } from 'react-icons/fa';
+import './AddTask.css';
 
 function AddTask() {
   const dispatch = useDispatch();
@@ -97,24 +98,9 @@ function AddTask() {
 
   return (
     <div className="container-fluid">
-      <div style={{
-        position: 'absolute',
-        top: '100px',
-        left: '20px',
-        zIndex: 1000
-      }}>
+      <div className="back-button-container">
         <button
-          className="btn btn-outline-secondary"
-          style={{
-            padding: '0.5rem 1rem',
-            fontSize: '0.9rem',
-            borderRadius: '4px',
-            transition: 'all 0.2s ease',
-            backgroundColor: 'rgba(255, 255, 255, 0.95)',
-            border: '1px solid rgba(0, 0, 0, 0.1)',
-            display: 'flex',
-            alignItems: 'center'
-          }}
+          className="btn back-button"
           onClick={() => navigate('/')}
         >
           <FaArrowLeft style={{ marginRight: '0.5rem' }} />

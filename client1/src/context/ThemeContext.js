@@ -21,6 +21,8 @@ export const ThemeProvider = ({ children }) => {
     useEffect(() => {
         // Update data-theme attribute on document root (or body)
         document.documentElement.setAttribute('data-theme', theme);
+        // Also set Bootstrap's native theme attribute
+        document.documentElement.setAttribute('data-bs-theme', theme);
         // Save to localStorage
         localStorage.setItem('theme', theme);
     }, [theme]);

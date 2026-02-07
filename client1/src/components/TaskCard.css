@@ -22,8 +22,8 @@
   color: #6c757d;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid #dee2e6;
-  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
 }
 
 .edit-button:hover {
@@ -88,8 +88,8 @@
   align-items: center;
   gap: 0.3rem;
   transition: all 0.2s ease;
-  border: 1px solid #dee2e6;
-  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
 }
 
 .action-btn i {
@@ -208,9 +208,9 @@
 }
 
 .btn-view {
-  background-color: #fff;
-  color: #0d6efd;
-  border: 1px solid #dee2e6;
+  background-color: var(--card-bg);
+  color: var(--primary-color);
+  border: 1px solid var(--card-border);
 }
 
 .btn-view:hover {
@@ -220,9 +220,9 @@
 }
 
 .btn-edit {
-  background-color: #fff;
-  color: #6c757d;
-  border: 1px solid #dee2e6;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border: 1px solid var(--card-border);
 }
 
 .btn-edit:hover {
@@ -232,9 +232,9 @@
 }
 
 .btn-done {
-  background-color: #fff;
-  color: #28a745;
-  border: 1px solid #28a745;
+  background-color: var(--card-bg);
+  color: var(--success-color);
+  border: 1px solid var(--success-color);
 }
 
 .btn-done:hover {
@@ -244,9 +244,9 @@
 }
 
 .btn-delete {
-  background-color: #fff;
-  color: #dc3545;
-  border: 1px solid #dc3545;
+  background-color: var(--card-bg);
+  color: var(--danger-color);
+  border: 1px solid var(--danger-color);
 }
 
 .btn-delete:hover {
