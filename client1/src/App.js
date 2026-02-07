@@ -8,24 +8,28 @@ import Dashboard from './components/Dashboard';
 import AddTask from './components/AddTask';
 import TaskDetails from './components/TaskDetails';
 
+import { ThemeProvider } from './context/ThemeContext';
+
 function App() {
   return (
     <Provider store={store}>
-      <Router>
-        <div className="App">
-          <Navbar />
-          <div className="container mt-4">
-            <Routes>
-              <Route path="/" element={<Dashboard showCompletedOnly={false} />} />
-              <Route path="/completed" element={<Dashboard showCompletedOnly={true} />} />
-              <Route path="/add" element={<AddTask />} />
-              <Route path="/add-task" element={<AddTask />} />
-              <Route path="/add-task/:id" element={<AddTask />} />
-              <Route path="/task/:id" element={<TaskDetails />} />
-            </Routes>
+      <ThemeProvider>
+        <Router>
+          <div className="App">
+            <Navbar />
+            <div className="container mt-4">
+              <Routes>
+                <Route path="/" element={<Dashboard showCompletedOnly={false} />} />
+                <Route path="/completed" element={<Dashboard showCompletedOnly={true} />} />
+                <Route path="/add" element={<AddTask />} />
+                <Route path="/add-task" element={<AddTask />} />
+                <Route path="/add-task/:id" element={<AddTask />} />
+                <Route path="/task/:id" element={<TaskDetails />} />
+              </Routes>
+            </div>
           </div>
-        </div>
-      </Router>
+        </Router>
+      </ThemeProvider>
     </Provider>
   );
 }

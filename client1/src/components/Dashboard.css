@@ -5,16 +5,17 @@
 .dashboard-header h1 {
   font-size: 2.5rem;
   font-weight: 600;
-  color: #333;
+  color: var(--text-color);
   margin-bottom: 1rem;
 }
 
 .filter-container {
-  background: #fff;
+  background: var(--card-bg);
   padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
+  border: 1px solid var(--card-border);
 }
 
 .filter-row {
@@ -31,22 +32,25 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: #666;
+  color: var(--text-color);
+  opacity: 0.8;
 }
 
 .filter-group input,
 .filter-group select {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--input-border);
   border-radius: 4px;
   font-size: 0.9rem;
+  background-color: var(--input-bg);
+  color: var(--input-text);
 }
 
 .clear-filters {
-  background: #fff;
-  border: 1px solid #ddd;
-  color: #666;
+  background: var(--card-bg);
+  border: 1px solid var(--input-border);
+  color: var(--text-color);
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
@@ -54,10 +58,17 @@
 }
 
 .clear-filters:hover {
-  background: #f8f9fa;
-  border-color: #ccc;
+  background: var(--bg-color);
+  border-color: var(--input-border);
 }
 
 .filter-icon {
   margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .filter-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }

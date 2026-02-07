@@ -8,7 +8,9 @@ import 'jquery-ui/ui/widgets/tooltip';
 import './Dashboard.css';
 import './TaskCard.css';
 import './PriorityBadge.css';
-import { FaSearch, FaFilter, FaTimes, FaCheck, FaTrash, FaEdit } from 'react-icons/fa';
+import { FaSearch, FaTimes, FaCheck, FaTrash, FaEdit, FaList, FaColumns } from 'react-icons/fa';
+import KanbanBoard from './KanbanBoard';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function Dashboard({ showCompletedOnly = false }) {
   const dispatch = useDispatch();
@@ -17,19 +19,9 @@ function Dashboard({ showCompletedOnly = false }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [priorityFilter, setPriorityFilter] = useState('');
+  const [viewMode, setViewMode] = useState('list'); // 'list' or 'board'
 
   const filteredTasks = tasks.filter(task => {
-    // Debug logging
-    console.log('Filtering task:', {
-      title: task.title,
-      priority: task.priority,
-      status: task.status,
-      searchTerm,
-      statusFilter,
-      priorityFilter,
-      showCompletedOnly
-    });
-
     // Search filter
     const matchesSearch = searchTerm ?
       task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -43,9 +35,7 @@ function Dashboard({ showCompletedOnly = false }) {
     if (showCompletedOnly) {
       matchesStatus = task.status === 'completed';
     } else {
-      // If we are on the main dashboard, exclude completed tasks
       if (task.status === 'completed') return false;
-      // Apply status filter if selected (e.g. pending/in-progress)
       matchesStatus = statusFilter ? task.status === statusFilter : true;
     }
 
@@ -68,8 +58,8 @@ function Dashboard({ showCompletedOnly = false }) {
   }, [status, dispatch]);
 
   useEffect(() => {
-    // Initialize jQuery functionality after tasks are loaded
-    if (filteredTasks.length > 0 && taskListRef.current) {
+    // Only initialize jQuery stuff in List View
+    if (viewMode === 'list' && filteredTasks.length > 0 && taskListRef.current) {
       // Initialize tooltips if not already initialized
       if (!tooltipInitialized.current) {
         try {
@@ -87,7 +77,6 @@ function Dashboard({ showCompletedOnly = false }) {
             items: '.task-card',
             handle: '.card-header',
             update: function (event, ui) {
-              // Here you could implement custom sorting logic
               console.log('Task order updated');
             }
           });
@@ -110,27 +99,24 @@ function Dashboard({ showCompletedOnly = false }) {
 
     // Cleanup
     return () => {
-      // Cleanup tooltips
       if (tooltipInitialized.current) {
         try {
           $('[data-toggle="tooltip"]').tooltip('dispose');
-        } catch (error) {
-          console.log('Tooltip cleanup error:', error);
-        }
+        } catch (error) { }
         tooltipInitialized.current = false;
       }
 
-      // Cleanup sortable
       if (sortableInitialized.current && taskListRef.current) {
         try {
-          $(taskListRef.current).sortable('destroy');
-        } catch (error) {
-          console.log('Sortable cleanup error:', error);
-        }
+          // Check if element exists before destroying
+          if ($(taskListRef.current).length) {
+            $(taskListRef.current).sortable('destroy');
+          }
+        } catch (error) { }
         sortableInitialized.current = false;
       }
     };
-  }, [filteredTasks]);
+  }, [filteredTasks, viewMode]);
 
   const handleDelete = (taskId) => {
     if (window.confirm('Are you sure you want to delete this task?')) {
@@ -146,7 +132,6 @@ function Dashboard({ showCompletedOnly = false }) {
   };
 
   const handleEdit = (taskId) => {
-    // Redirect to add task page with task ID as path parameter
     navigate(`/add-task/${taskId}`);
   };
 
@@ -171,8 +156,23 @@ function Dashboard({ showCompletedOnly = false }) {
 
   return (
     <div className="dashboard">
-      <div className="dashboard-header">
+      <div className="d-flex justify-content-between align-items-center dashboard-header mb-3">
         <h1>{showCompletedOnly ? 'Completed Tasks' : 'Dashboard'}</h1>
+
+        <div className="btn-group">
+          <button
+            className={`btn ${viewMode === 'list' ? 'btn-primary' : 'btn-outline-primary'}`}
+            onClick={() => setViewMode('list')}
+          >
+            <FaList className="me-2" /> List
+          </button>
+          <button
+            className={`btn ${viewMode === 'board' ? 'btn-primary' : 'btn-outline-primary'}`}
+            onClick={() => setViewMode('board')}
+          >
+            <FaColumns className="me-2" /> Board
+          </button>
+        </div>
       </div>
 
       <div className="filter-container">
@@ -234,96 +234,121 @@ function Dashboard({ showCompletedOnly = false }) {
         </div>
       </div>
 
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="mb-0">Tasks</h2>
-        <Link to="/add" className="btn btn-primary">
-          <i className="fas fa-plus me-2"></i>Add New Task
-        </Link>
-      </div>
+      {viewMode === 'list' && (
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h2 className="mb-0">Tasks</h2>
+          <Link to="/add" className="btn btn-primary">
+            <i className="fas fa-plus me-2"></i>Add New Task
+          </Link>
+        </div>
+      )}
 
       {filteredTasks.length === 0 ? (
         <div className="text-center py-5">
           <i className="fas fa-tasks fa-3x text-muted mb-3"></i>
-          <h4>No tasks found</h4>
-          <p className="text-muted">Get started by adding a new task!</p>
-          <Link to="/add" className="btn btn-primary mt-3">
-            Create Your First Task
-          </Link>
+          <h4>{searchTerm || statusFilter || priorityFilter ? 'No items match your filters' : 'No tasks found'}</h4>
+          {!showCompletedOnly && (
+            <>
+              <p className="text-muted">Get started by adding a new task!</p>
+              <Link to="/add" className="btn btn-primary mt-3">
+                Create Your First Task
+              </Link>
+            </>
+          )}
         </div>
       ) : (
-        <div className="row g-4 task-list" ref={taskListRef}>
-          {filteredTasks.map((task) => (
-            <div
-              key={task._id}
-              id={`task-${task._id}`}
-              className="col-md-6 col-lg-4 task-card"
-              data-toggle="tooltip"
-              title={`Created: ${new Date(task.createdAt).toLocaleDateString()}`}
-            >
-              <div className="card h-100 task-card">
-                <div className="card-header">
-                  <h5 className="card-title">{task.title}</h5>
-                  <span className={`status-badge status-${task.status || 'pending'}`}>
-                    {(task.status || 'pending').charAt(0).toUpperCase() + (task.status || 'pending').slice(1)}
-                  </span>
-                </div>
-                <div className="card-body">
-                  <p className="description">{task.description}</p>
-                  <div className="priority-date-container">
-                    <div className="priority">
-                      <span className={`priority-badge ${task.priority || 'medium'}`}>
-                        <i className="fas fa-star"></i>
-                        {(task.priority || 'medium').charAt(0).toUpperCase() + (task.priority || 'medium').slice(1)}
-                      </span>
-                    </div>
-                    {task.dueDate && (
-                      <div>
-                        <i className="far fa-calendar-alt"></i>
-                        <span>{new Date(task.dueDate).toLocaleDateString()}</span>
+        <>
+          {viewMode === 'board' ? (
+            <KanbanBoard
+              tasks={filteredTasks}
+              visibleColumns={showCompletedOnly ? ['completed'] : ['pending', 'in-progress']}
+            />
+          ) : (
+            <div className="row g-4 task-list" ref={taskListRef}>
+              <AnimatePresence>
+                {filteredTasks.map((task) => (
+                  <motion.div
+                    key={task._id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    className="col-md-6 col-lg-4 task-card-wrapper"
+                  >
+                    <div
+                      id={`task-${task._id}`}
+                      className="task-card h-100"
+                      title={`Created: ${new Date(task.createdAt).toLocaleDateString()}`}
+                      data-toggle="tooltip"
+                    >
+                      <div className="card h-100 task-card-inner">
+                        <div className="card-header">
+                          <h5 className="card-title">{task.title}</h5>
+                          <span className={`status-badge status-${task.status || 'pending'}`}>
+                            {(task.status || 'pending').charAt(0).toUpperCase() + (task.status || 'pending').slice(1)}
+                          </span>
+                        </div>
+                        <div className="card-body d-flex flex-column">
+                          <p className="description">{task.description}</p>
+                          <div className="priority-date-container">
+                            <div className="priority">
+                              <span className={`priority-badge ${task.priority || 'medium'}`}>
+                                <i className="fas fa-star"></i>
+                                {(task.priority || 'medium').charAt(0).toUpperCase() + (task.priority || 'medium').slice(1)}
+                              </span>
+                            </div>
+                            {task.dueDate && (
+                              <div>
+                                <i className="far fa-calendar-alt"></i>
+                                <span>{new Date(task.dueDate).toLocaleDateString()}</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="mt-auto d-flex justify-content-end w-100 pt-3">
+                            <div className="d-flex gap-2">
+                              <button
+                                className="action-btn btn-view"
+                                onClick={() => navigate(`/task/${task._id}`)}
+                              >
+                                <FaSearch className="me-1" /> View
+                              </button>
+
+                              <button
+                                className="action-btn btn-edit"
+                                onClick={() => handleEdit(task._id)}
+                              >
+                                <FaEdit /> Edit
+                              </button>
+
+                              {!showCompletedOnly && task.status !== 'completed' && (
+                                <button
+                                  className="action-btn btn-done"
+                                  onClick={() => handleComplete(task._id)}
+                                >
+                                  <FaCheck /> Done
+                                </button>
+                              )}
+
+                              <button
+                                className="action-btn btn-delete"
+                                onClick={() => handleDelete(task._id)}
+                              >
+                                <FaTrash /> Delete
+                              </button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    )}
-                  </div>
-                  <div className="position-absolute bottom-0 end-0 mb-3 me-3">
-                    <div className="d-flex gap-2">
-                      <button
-                        className="action-btn btn-view"
-                        onClick={() => navigate(`/task/${task._id}`)}
-                      >
-                        <FaSearch className="me-1" /> View
-                      </button>
-
-                      <button
-                        className="action-btn btn-edit"
-                        onClick={() => handleEdit(task._id)}
-                      >
-                        <FaEdit /> Edit
-                      </button>
-
-                      {!showCompletedOnly && task.status !== 'completed' && (
-                        <button
-                          className="action-btn btn-done"
-                          onClick={() => handleComplete(task._id)}
-                        >
-                          <FaCheck /> Done
-                        </button>
-                      )}
-
-                      <button
-                        className="action-btn btn-delete"
-                        onClick={() => handleDelete(task._id)}
-                      >
-                        <FaTrash /> Delete
-                      </button>
                     </div>
-                  </div>
-                </div>
-              </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
     </div>
   );
 }
 
-export default Dashboard; 
+export default Dashboard;

@@ -6,13 +6,38 @@ A full-stack web application for managing your daily tasks, built with React, Re
 The Task Manager helps you organize, track, and manage your tasks efficiently. You can add, edit, delete, and view tasks, as well as mark them as pending, in-progress, or completed. The dashboard provides a clear overview of all your tasks with a modern, responsive UI.
 
 ## ✨ Features
-- **Filtered Dashboard**: Main view shows only Pending and In-Progress tasks.
-- **Completed Tasks View**: Dedicated page for viewing historical/completed tasks.
-- **Read-Only Details**: Clean, non-editable view for task details with action buttons.
-- **Smart Forms**: Add/Edit form pre-fills data and adapts title/buttons.
-- **Task Management**: Add, Edit, Delete, and Mark as Complete functionality.
-- **Sortable Cards**: Drag-and-drop task organization (jQuery UI).
-- **Responsive UI**: Modern interface with Bootstrap and custom CSS.
+
+### 📊 Dashboard
+- **Kanban Board**: Drag-and-drop tasks between "Pending" and "In Progress" states.
+- **List View**: Switch to a traditional list view for a compact overview.
+- **Filtering**: Search by title/description and filter by status or priority.
+- **Quick Actions**: View, Edit, Delete, and Mark as Done directly from the card.
+
+![Dashboard Light](./assets/dashboard-light.png)
+
+### ✅ Completed Tasks
+- **Dedicated View**: Separate page for all completed tasks to keep your dashboard clutter-free.
+- **History**: Review your accomplishments with the same powerful filtering options.
+
+![Completed Tasks](./assets/completed-tasks.png)
+
+### 🌓 Dark Mode
+- **Theme Toggle**: seamless switch between Light and Dark modes.
+- **Persistent Preference**: Your theme choice is saved for your next visit.
+
+![Dashboard Dark](./assets/dashboard-dark.png)
+
+### 📝 Task Management
+- **Smart Forms**: Add and Edit tasks with pre-filled data.
+- **Priority Levels**: Categorize tasks by Low (Green), Medium (Yellow), and High (Red) priority.
+- **Due Dates**: Track deadlines with calendar integration.
+
+![Add Task](./assets/add-task.png)
+
+### 🎨 Modern UI
+- **Responsive Design**: Works perfectly on desktop and mobile.
+- **Animations**: Smooth transitions entering/leaving the list.
+- **Interactive**: Hover effects and tooltips for better UX.
 
 ## 🛠️ Tech Stack
 - **Frontend:** React, Redux, Bootstrap, jQuery, jQuery UI

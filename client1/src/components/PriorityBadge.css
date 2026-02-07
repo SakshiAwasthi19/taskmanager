@@ -13,16 +13,16 @@
 }
 
 .priority-badge.high {
-  background-color: rgb(255, 134, 55);
+  background-color: #dc3545;
   color: white;
 }
 
 .priority-badge.medium {
   background-color: #ffc107;
-  color: #212529;
+  color: #000;
 }
 
 .priority-badge.low {
-  background-color: #6c757d;
+  background-color: #28a745;
   color: white;
 }

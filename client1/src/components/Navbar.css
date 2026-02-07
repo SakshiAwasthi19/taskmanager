@@ -1,6 +1,6 @@
 .navbar {
-  padding: 0.5rem 1rem !important;
-  height: 50px !important;
+  /* padding: 0.5rem 1rem !important; */
+  /* height: 50px !important; */
 }
 
 .navbar-brand {
@@ -19,6 +19,11 @@
   border-radius: 4px;
 }
 
+/* Light mode hover fix */
+[data-theme="light"] .nav-link:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
 .navbar-nav {
   margin-left: auto !important;
 }
@@ -32,9 +37,12 @@
   box-shadow: none;
 }
 
+/* Remove hardcoded icon to let Bootstrap handle it based on navbar-dark/light class */
+/*
 .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  background-image: ...
 }
+*/
 
 .navbar-collapse {
   padding-top: 0.5rem;
