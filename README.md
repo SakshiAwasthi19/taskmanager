@@ -53,7 +53,7 @@ The Task Manager helps you organize, track, and manage your tasks efficiently. Y
 ### 1. Clone the repository
 ```bash
 git clone <your-repo-url>
-cd fsui-assignment
+cd taskmanager
 ```
 
 ### 2. Install dependencies
@@ -93,7 +93,7 @@ npm start
 ```
 
 ### 4. Open in Browser
-Visit [http://localhost:3002](http://localhost:3002) to use the Task Manager.
+Visit [http://localhost:3000](http://localhost:3000) to use the Task Manager.
 
 ## 🖥️ Usage
 - **Dashboard**: View active tasks (Pending/In-Progress). Use filters to search or sort.
@@ -105,7 +105,7 @@ Visit [http://localhost:3002](http://localhost:3002) to use the Task Manager.
 
 ## 📁 Project Structure
 ```
-fsui-assignment/
+taskmanager/
 ├── client1/         # React frontend
 ├── server.js       # Express backend
 └── ...
@@ -124,3 +124,4 @@ fsui-assignment/
 ---
 
 Feel free to customize and enhance this project for your needs! 
+
