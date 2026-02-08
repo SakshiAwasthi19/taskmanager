@@ -13,7 +13,8 @@ The Task Manager helps you organize, track, and manage your tasks efficiently. Y
 - **Profile Management**: Update your name, email, and password via the Account Modal.
 - **Account Controls**: Logout and Delete Account options available.
 
-![Profile Modal](./assets/profile-modal.png)
+![Profile Modal](<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/7f938e78-6661-41d9-884b-4de56c7df66a" />
+)
 
 ### 📊 Analytics & Reporting
 - **Productivity Dashboard**: Visual breakdown of your task progress.
@@ -117,4 +118,5 @@ taskmanager/
 ---
 
 Feel free to customize and enhance this project for your needs! 
+
 
