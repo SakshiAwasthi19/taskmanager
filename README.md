@@ -1,4 +1,4 @@
-# Task Manager
+  # Task Manager
 
 A full-stack web application for managing your daily tasks, built with React, Redux, Node.js, Express, MongoDB, Bootstrap, and jQuery.
 
@@ -7,37 +7,30 @@ The Task Manager helps you organize, track, and manage your tasks efficiently. Y
 
 ## ✨ Features
 
-### 📊 Dashboard
-- **Kanban Board**: Drag-and-drop tasks between "Pending" and "In Progress" states.
-- **List View**: Switch to a traditional list view for a compact overview.
-- **Filtering**: Search by title/description and filter by status or priority.
-- **Quick Actions**: View, Edit, Delete, and Mark as Done directly from the card.
+### 🔐 User Authentication
+- **Secure Access**: Register and Login with email and password.
+- **JWT Authentication**: Data privacy ensuring you only see your own tasks.
+- **Profile Management**: Update your name, email, and password via the Account Modal.
+- **Account Controls**: Logout and Delete Account options available.
+
+![Profile Modal](./assets/profile-modal.png)
+
+### 📊 Analytics & Reporting
+- **Productivity Dashboard**: Visual breakdown of your task progress.
+- **Weekly Trends**: Interactive Bar and Line charts showing tasks completed over the last 7 days.
+- **Streak Counter**: Track your consistency with a daily streak counter.
+- **Key Stats**: Instant view of Total, Completed, and Pending tasks.
+
+![Analytics Report](./assets/analytics-report.png)
+
+### 🎨 Modern UI & UX
+- **Kanban Board**: Drag-and-drop tasks between states.
+- **Dark Mode**: Seamless toggle with persistent preference.
+- **Responsive Design**: Optimized for all devices.
+- **Interactive Elements**: Smooth transitions, hover effects, and animated components.
 
 ![Dashboard Light](./assets/dashboard-light.png)
-
-### ✅ Completed Tasks
-- **Dedicated View**: Separate page for all completed tasks to keep your dashboard clutter-free.
-- **History**: Review your accomplishments with the same powerful filtering options.
-
-![Completed Tasks](./assets/completed-tasks.png)
-
-### 🌓 Dark Mode
-- **Theme Toggle**: seamless switch between Light and Dark modes.
-- **Persistent Preference**: Your theme choice is saved for your next visit.
-
 ![Dashboard Dark](./assets/dashboard-dark.png)
-
-### 📝 Task Management
-- **Smart Forms**: Add and Edit tasks with pre-filled data.
-- **Priority Levels**: Categorize tasks by Low (Green), Medium (Yellow), and High (Red) priority.
-- **Due Dates**: Track deadlines with calendar integration.
-
-![Add Task](./assets/add-task.png)
-
-### 🎨 Modern UI
-- **Responsive Design**: Works perfectly on desktop and mobile.
-- **Animations**: Smooth transitions entering/leaving the list.
-- **Interactive**: Hover effects and tooltips for better UX.
 
 ## 🛠️ Tech Stack
 - **Frontend:** React, Redux, Bootstrap, jQuery, jQuery UI
@@ -93,7 +86,7 @@ npm start
 ```
 
 ### 4. Open in Browser
-Visit [http://localhost:3002](http://localhost:3002) to use the Task Manager.
+Visit [http://localhost:3000](http://localhost:3000) to use the Task Manager.
 
 ## 🖥️ Usage
 - **Dashboard**: View active tasks (Pending/In-Progress). Use filters to search or sort.

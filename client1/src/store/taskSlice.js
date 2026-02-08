@@ -4,30 +4,85 @@ import axios from 'axios';
 const API_URL = 'http://localhost:5000/api/tasks';
 
 // Async thunks
-export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async () => {
-    const response = await axios.get(API_URL);
-    return response.data;
+export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async (_, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+        const response = await axios.get(API_URL, config);
+        return response.data;
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
 });
 
 // Add fetchTask action for individual task
-export const fetchTask = createAsyncThunk('tasks/fetchTask', async (taskId) => {
-    const response = await axios.get(`${API_URL}/${taskId}`);
-    return response.data;
+export const fetchTask = createAsyncThunk('tasks/fetchTask', async (taskId, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+        const response = await axios.get(`${API_URL}/${taskId}`, config);
+        return response.data;
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
 });
 
-export const addTask = createAsyncThunk('tasks/addTask', async (task) => {
-    const response = await axios.post(API_URL, task);
-    return response.data;
+export const addTask = createAsyncThunk('tasks/addTask', async (task, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+        const response = await axios.post(API_URL, task, config);
+        return response.data;
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
 });
 
-export const updateTask = createAsyncThunk('tasks/updateTask', async ({ id, task }) => {
-    const response = await axios.put(`${API_URL}/${id}`, task);
-    return response.data;
+export const updateTask = createAsyncThunk('tasks/updateTask', async ({ id, task }, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+        const response = await axios.put(`${API_URL}/${id}`, task, config);
+        return response.data;
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
 });
 
-export const deleteTask = createAsyncThunk('tasks/deleteTask', async (id) => {
-    await axios.delete(`${API_URL}/${id}`);
-    return id;
+export const deleteTask = createAsyncThunk('tasks/deleteTask', async (id, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+        await axios.delete(`${API_URL}/${id}`, config);
+        return id;
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
 });
 
 const taskSlice = createSlice({

@@ -43,7 +43,12 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email });
-        if (user && (await user.matchPassword(password))) {
+
+        if (!user) {
+            return res.status(400).json({ message: 'User does not exist' });
+        }
+
+        if (await user.matchPassword(password)) {
             res.json({
                 _id: user._id,
                 name: user.name,
@@ -65,6 +70,63 @@ router.get('/me', protect, async (req, res) => {
     try {
         const user = await User.findById(req.user._id).select('-password');
         res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// @route   PUT /api/auth/updatedetails
+// @desc    Update user details
+// @access  Private
+router.put('/updatedetails', protect, async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+
+        if (user) {
+            user.name = req.body.name || user.name;
+            user.email = req.body.email || user.email;
+
+            if (req.body.password) {
+                user.password = req.body.password;
+            }
+
+            const updatedUser = await user.save();
+
+            res.json({
+                _id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                token: generateToken(updatedUser._id),
+            });
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// @route   DELETE /api/auth/me
+// @desc    Delete user and their tasks
+// @access  Private
+router.delete('/me', protect, async (req, res) => {
+    try {
+        // Find user
+        const user = await User.findById(req.user._id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Delete all tasks belonging to this user
+        // We need to import Task model to do this
+        const Task = require('../models/Task');
+        await Task.deleteMany({ user: req.user._id });
+
+        // Delete user
+        await user.deleteOne();
+
+        res.json({ message: 'User and all associated tasks deleted' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
