@@ -1,9 +1,28 @@
-  # Task Manager
+# Task Manager
 
 A full-stack web application for managing your daily tasks, built with React, Redux, Node.js, Express, MongoDB, Bootstrap, and jQuery.
 
 ## 🚀 Project Overview
 The Task Manager helps you organize, track, and manage your tasks efficiently. You can add, edit, delete, and view tasks, as well as mark them as pending, in-progress, or completed. The dashboard provides a clear overview of all your tasks with a modern, responsive UI.
+
+## 📸 Screenshots
+
+### 🔑 Login Page
+![Login Page](./assets/login-page.png)
+
+### 🏠 Dashboard
+![Dashboard](./assets/dashboard-main.png)
+
+### ➕ Add New Task
+![Add Task Form](./assets/add-task-form.png)
+
+### ✅ Completed Tasks
+![Completed Tasks](./assets/completed-tasks.png)
+
+### 📊 Analytics & Report
+![Analytics Report](./assets/report-analytics.png)
+
+---
 
 ## ✨ Features
 
@@ -13,7 +32,11 @@ The Task Manager helps you organize, track, and manage your tasks efficiently. Y
 - **Profile Management**: Update your name, email, and password via the Account Modal.
 - **Account Controls**: Logout and Delete Account options available.
 
-![Profile Modal](./assets/profile-modal.png)
+### 📋 Task Management
+- **Add Tasks**: Create tasks with title, description, status, priority, and due date.
+- **Edit Tasks**: Modify any task details at any time.
+- **Delete Tasks**: Remove tasks you no longer need.
+- **Mark Complete**: Move tasks from active to completed with one click.
 
 ### 📊 Analytics & Reporting
 - **Productivity Dashboard**: Visual breakdown of your task progress.
@@ -21,16 +44,14 @@ The Task Manager helps you organize, track, and manage your tasks efficiently. Y
 - **Streak Counter**: Track your consistency with a daily streak counter.
 - **Key Stats**: Instant view of Total, Completed, and Pending tasks.
 
-![Analytics Report](./assets/analytics-report.png)
-
 ### 🎨 Modern UI & UX
 - **Kanban Board**: Drag-and-drop tasks between states.
 - **Dark Mode**: Seamless toggle with persistent preference.
 - **Responsive Design**: Optimized for all devices.
 - **Interactive Elements**: Smooth transitions, hover effects, and animated components.
+- **List & Board Views**: Switch between list and kanban board layouts.
 
-![Dashboard Light](./assets/dashboard-light.png)
-![Dashboard Dark](./assets/dashboard-dark.png)
+---
 
 ## 🛠️ Tech Stack
 - **Frontend:** React, Redux, Bootstrap, jQuery, jQuery UI
@@ -45,7 +66,7 @@ The Task Manager helps you organize, track, and manage your tasks efficiently. Y
 
 ### 1. Clone the repository
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/SakshiAwasthi19/taskmanager.git
 cd taskmanager
 ```
 
@@ -91,17 +112,26 @@ Visit [http://localhost:3000](http://localhost:3000) to use the Task Manager.
 ## 🖥️ Usage
 - **Dashboard**: View active tasks (Pending/In-Progress). Use filters to search or sort.
 - **View Task**: Click "View" on a card to see full details in a read-only page.
-- **Completed Tasks**: Access the "Completed Tasks" page from the Navbar to see finished work.
-- **Add Task**: Click "+ Add Task" in the Navbar or Dashboard.
+- **Completed Tasks**: Access the "Completed" page from the Navbar to see finished work.
+- **Add Task**: Click "+ Add Task" in the Navbar or Dashboard to create a new task.
 - **Edit Task**: Click "Edit" on a card or "Edit Task" in the details view to modify.
 - **Mark Complete**: Click "Done" on a card or "Mark as Complete" in details to move to Completed list.
+- **Analytics**: Visit the "Report" page for productivity insights and weekly trends.
 
 ## 📁 Project Structure
 ```
 taskmanager/
 ├── client1/         # React frontend
-├── server.js       # Express backend
-└── ...
+│   ├── src/
+│   │   ├── components/   # Reusable UI components
+│   │   ├── pages/        # Page-level components
+│   │   ├── store/        # Redux state management
+│   │   └── context/      # React context providers
+├── routes/          # Express API routes
+├── models/          # Mongoose database models
+├── middleware/      # Express middleware (auth, etc.)
+├── assets/          # Screenshots and static assets
+└── server.js        # Express backend entry point
 ```
 
 ## 🙏 Credits
@@ -116,5 +146,4 @@ taskmanager/
 
 ---
 
-Feel free to customize and enhance this project for your needs! 
-
+Feel free to customize and enhance this project for your needs!
